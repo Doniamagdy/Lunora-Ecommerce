@@ -9,7 +9,7 @@ const client = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-  <BrowserRouter> 
+  <BrowserRouter basename="/Lunora-Ecommerce"> 
     <QueryClientProvider client={client}>
       <App />
     </QueryClientProvider>
