@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FadeLoader } from "react-spinners";
 import ProductCard from "../components/ui/ProductCard";
+import Categories from "./categories/Categories";
+import Brands from "./brands/Brands";
 
 function Home() {
   const getData = async () => {
@@ -20,7 +22,7 @@ function Home() {
       );
 
       console.log(response?.data.data);
-      return response;
+      return response?.data.data;
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +35,13 @@ function Home() {
 
   return (
     <>
-      <Navbar />
+      {/* Categories */}
+      <Categories />
+
+      {/* Brands */}
+      <Brands />
+
+      {/* Home Products */}
       {isError ? <p>{error.message}</p> : null}
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
@@ -41,7 +49,7 @@ function Home() {
         </div>
       ) : (
         <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-          {data?.data.data.map((product) => (
+          {data?.map((product) => (
             <ProductCard
               key={product?.id}
               id={product.id}
@@ -53,7 +61,7 @@ function Home() {
         </div>
       )}
 
-      <Footer />
+      
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { ShoppingBag, Search, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -11,10 +12,10 @@ const Navbar = () => {
 
         {/* Links (Hidden on small screens) */}
         <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
-          <li className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Home</li>
-          <li className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Shop</li>
-          <li className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Categories</li>
-          <li className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Contact</li>
+          <Link to={"/home"} className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Home</Link>
+          <Link to={"/brands"} className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Brands</Link>
+          <Link to={"/categories"} className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Categories</Link>
+          <Link className="hover:text-[#C3A27B] transition duration-300 cursor-pointer">Contact</Link>
         </ul>
 
         {/* Icons */}
