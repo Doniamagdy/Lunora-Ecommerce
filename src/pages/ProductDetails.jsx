@@ -34,7 +34,7 @@ function ProductDetails() {
 
   return (
     <>
-      <Navbar />
+   
       <div className="pt-24 px-6 md:px-16 lg:px-32">
         <div className="flex flex-col md:flex-row gap-10 items-center">
           {/* Product Image */}
@@ -70,7 +70,7 @@ function ProductDetails() {
           </div>
         </div>
       </div>{" "}
-      <Footer />
+ 
     </>
   );
 }

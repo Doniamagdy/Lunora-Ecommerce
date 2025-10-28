@@ -1,8 +1,12 @@
 import React from "react";
 import ReusableButton from "./ReusableButton";
 import ReusableLink from "./ReusableLink";
+import useAddToCart from "../../hooks/useAddToCart";
+
 
 function ProductCard({ id, image, title, price, description, brand }) {
+
+  const {mutate} = useAddToCart()
   return (
     <div className="  inset-shadow-sm rounded-3xl shadow-xl hover:transition-all duration-300 overflow-hidden w-full max-w-xs mx-auto cursor-pointer">
       {/* Product Image */}
@@ -30,7 +34,7 @@ function ProductCard({ id, image, title, price, description, brand }) {
         <p className="text-[#C3A27B] text-lg font-semibold">EGP {price}</p>
 
         <div className="mt-4">
-          <ReusableButton buttonText={"Add to Cart"} />
+          <ReusableButton buttonText={"Add to Cart"}  onClick={()=> mutate(id)}/>
         </div>
         <div className="mt-4">
           <ReusableLink

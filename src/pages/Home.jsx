@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FadeLoader } from "react-spinners";
@@ -60,8 +58,6 @@ function Home() {
           ))}
         </div>
       )}
-
-      
     </>
   );
 }
