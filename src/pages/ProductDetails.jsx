@@ -1,8 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 import { useParams } from "react-router-dom";
 import ReusableButton from "../components/ui/ReusableButton";
 

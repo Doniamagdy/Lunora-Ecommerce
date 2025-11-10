@@ -54,6 +54,7 @@ function Home() {
               image={product.images[0]}
               title={product.title}
               price={product.price}
+              brand={product.brand.name}
             />
           ))}
         </div>

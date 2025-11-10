@@ -3,7 +3,7 @@ import React from "react";
 function ReusableButton({
   type = "button",
   buttonText,
-  className="w-full px-4 py-2 bg-[#C3A27B] text-white text-sm rounded-md hover:brightness-105 transition",
+  className="w-full px-4 py-2 bg-[#C3A27B] text-white text-sm rounded-md hover:brightness-105 transition cursor-pointer",
   onClick,
   disabled = false,
 }) {
