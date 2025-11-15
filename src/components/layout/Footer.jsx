@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 py-10 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
         {/* Brand + Short */}
         <div className="space-y-3">
-          <h2 className="text-2xl font-serif text-[#C3A27B]">Iunora</h2>
+          <h2 className="text-2xl font-serif text-[#C3A27B]">Lunora</h2>
           <p className="text-sm leading-relaxed">
             Discover curated products inspired by Egyptian heritage and modern elegance.
             Quality, variety and a graceful shopping experience — all in one place.
@@ -69,7 +69,7 @@ const Footer = () => {
 
         {/* Newsletter Mini */}
         <div>
-          <h3 className="text-lg font-medium mb-3">Join Iunora Club</h3>
+          <h3 className="text-lg font-medium mb-3">Join Lunora Club</h3>
           <p className="text-sm leading-relaxed mb-3">
             Get exclusive offers & early access to new collections.
           </p>

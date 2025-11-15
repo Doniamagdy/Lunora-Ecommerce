@@ -14,6 +14,9 @@ import Cart from "./pages/cart/Cart";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute"
 import WishList from "./pages/wishlist/WishList";
+import Address from "./pages/address/Address";
+import AddAddress from "./pages/address/AddAddress";
+
 
 
 function App() {
@@ -46,6 +49,10 @@ function App() {
 
       {/* Wishlist */}
       <Route path="wishlist" element={<WishList />} />
+
+     {/* Address */}
+     <Route path="address" element={<Address />} />
+      <Route path="add-address" element={<AddAddress />} />
 
       </Route>
 

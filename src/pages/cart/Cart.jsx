@@ -1,6 +1,6 @@
 import {useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import useAddItem from "../../hooks/useAddItem"
+import useUpdateItemCount from "../../hooks/useUpdateItemCount"
 import { useContext, useState } from "react";
 import useRemoveItem from "../../hooks/useRemoveItem";
 import { CartContext } from "../../context/CartProvider";
@@ -12,10 +12,9 @@ const Cart = () => {
 
 
 
-const [newQt, setNewQty] = useState([])
 
 
-  const {mutate: addItem } = useAddItem({ onSuccess :()=> getNumberOfItemsInCart() });
+  const {mutate: updateCount} = useUpdateItemCount({ onSuccess :()=> getNumberOfItemsInCart() });
 
   const {mutate: removeItem} = useRemoveItem({ onSuccess :()=> getNumberOfItemsInCart() });
 
@@ -107,7 +106,7 @@ const [newQt, setNewQty] = useState([])
               </p>
 
               <div className="flex items-center gap-3 px-3 py-2 w-fit  my-2  ">
-                <button className="w-8 h-8 flex items-center justify-center bg-stone-100 text-gray-700  text-sm rounded-full shadow hover:bg-gray-200 transition">
+                <button onClick={() => updateCount({ productId: itemInCart.product._id, currentCount: itemInCart.count, action: "decrease" })} className="w-8 h-8 flex items-center justify-center bg-stone-100 text-gray-700  text-sm rounded-full shadow hover:bg-gray-200 transition">
                   −
                 </button>
 
@@ -115,8 +114,8 @@ const [newQt, setNewQty] = useState([])
                   {itemInCart.count}
                 </span>
 
-                <button onClick={()=> addItem(itemInCart.product._id )} className="text-sm w-8 h-8 flex items-center justify-center bg-[#C3A27B] text-white rounded-full shadow hover:bg-[#b18e66] transition">
-                  +
+                <button onClick={() => updateCount({ productId: itemInCart.product._id, currentCount: itemInCart.count, action: "increase" })} className="text-sm w-8 h-8 flex items-center justify-center bg-[#C3A27B] text-white rounded-full shadow hover:bg-[#b18e66] transition">
+                  +  
                 </button>
               </div>
             </div>

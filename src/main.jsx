@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {  HashRouter } from "react-router-dom";
 import AuthProvider from "./context/AuthProvider.jsx";
 import CartProvider from "./context/CartProvider.jsx";
+import AddressProvider from "./context/AddressProvider.jsx";
+import WishlistProvider from "./context/WishlistProvider.jsx";
 
 const client = new QueryClient();
 
@@ -15,7 +17,11 @@ createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={client}>
     <AuthProvider> 
     <CartProvider> 
+    <WishlistProvider>
+    <AddressProvider> 
       <App />
+      </AddressProvider>
+      </WishlistProvider>
       </CartProvider>
       </AuthProvider>
     </QueryClientProvider>

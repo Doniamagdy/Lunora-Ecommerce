@@ -3,8 +3,20 @@ import axios from 'axios';
 import React from 'react'
 
 
-function useAddItem() {
-  const addItem = async (productId) => {
+function useUpdateItemCount() {
+  const updateCount = async ({productId, currentCount , action}) => {
+
+let newCount = Number(currentCount);
+
+if(action === "increase"){
+  newCount = currentCount +1 
+}if(action === "decrease" && currentCount > 1){
+  newCount = currentCount -1 
+
+}
+
+
+    
     
   const token = localStorage.getItem("LunoraToken");
 
@@ -12,7 +24,7 @@ function useAddItem() {
       const response = await axios.put(
         `https://ecommerce.routemisr.com/api/v1/cart/${productId}`,
         {
-          count: 1,
+          count: newCount,
         },
         {
           headers: {
@@ -38,11 +50,11 @@ function useAddItem() {
 
 
   const mutation = useMutation({
-    mutationFn: addItem,
-    mutationKey:["addItem"],
+    mutationFn: updateCount,
+    mutationKey:["updateCount"],
   })
   
   return mutation
 }
 
-export default useAddItem;
+export default useUpdateItemCount;
