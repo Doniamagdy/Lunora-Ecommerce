@@ -5,9 +5,12 @@ import { FaMobileAlt } from "react-icons/fa";
 import { GiModernCity } from "react-icons/gi";
 import { GrMapLocation } from "react-icons/gr";
 import AddAddress from "./AddAddress";
+import useDeleteAddress from "../../hooks/useDeleteAddress";
 
 
 function Address() {
+
+  const {mutate} = useDeleteAddress()
 
   const getAddress = async () => {
     const token = localStorage.getItem("LunoraToken");
@@ -35,23 +38,23 @@ function Address() {
   });
 
   return (
-    <div className="mt-24 max-w-2xl mx-auto px-4">
+    <div className="mt-10">
       <div className="flex justify-between">
+
       <h2 className="text-3xl">Saved Addresses</h2>
         <AddAddress />
-
       </div>
       
 
-      <div className="space-y-5 my-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
         {data?.map((address) => (
           <div
             key={address._id}
-            className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition duration-300"
+            className="flex-1 bg-slate-50 rounded-3xl p-6 shadow-sm hover:shadow-md transition duration-300"
           >
             <div>
               <div>
-                <p className="text-3xl  font-serif font-semibold text-[#C3A27B]">
+                <p className="text-3xl ">
                   {address.name}
                 </p>
 
@@ -76,9 +79,7 @@ function Address() {
               </div>
 
               <div className="flex mt-4 mb-2 gap-2">
-                <ReusableButton buttonText={"Edit address"} />
-
-                <ReusableButton buttonText={"Delete address"} />
+                <ReusableButton buttonText={"Delete address"}  onClick={()=> mutate(address._id)}/>
               </div>
             </div>
           </div>

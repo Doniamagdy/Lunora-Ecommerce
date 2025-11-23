@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 function Brands() {
   const settings = {
@@ -41,9 +41,9 @@ function Brands() {
     <div className="gap-6 my-8 mx-auto w-7xl">
       <Slider {...settings}>
         {data?.map((brand) => (
-          <div key={brand._id}>
+          <Link key={brand._id} to={`/specific-brand/${brand._id}`}>
             <img src={brand.image} />
-          </div>
+          </Link>
         ))}
       </Slider>
     </div>

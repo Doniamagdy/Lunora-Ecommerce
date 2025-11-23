@@ -43,7 +43,7 @@ const {mutate} = useDeleteItemFromWishList()
 <button
         type="button"
         onClick={() => mutate(wishlistItem._id)}
-        className="absolute top-3 right-[95px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
+        className="absolute top-3 right-[15px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
       >
         <IoMdClose />
       </button>
@@ -55,6 +55,8 @@ const {mutate} = useDeleteItemFromWishList()
           price={wishlistItem.price}
           image={wishlistItem.imageCover}
           brand={wishlistItem.brand.name}
+          rating={wishlistItem.ratingsAverage}
+          
         />
         
 </div>

@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useState } from "react";
 export const CartContext = createContext();
 function CartProvider({ children }) {
   const [itemsInCart, setItemsInCart] = useState(0);
-
+const [cartId, setCartId] = useState();
   const getNumberOfItemsInCart = async () => {
     try {
       const token = localStorage.getItem("LunoraToken");
@@ -20,7 +20,9 @@ function CartProvider({ children }) {
       );
 
       
-    
+     console.log(response?.data?.cartId);
+     setCartId(response?.data?.cartId)
+     
       const productsArray =response?.data?.data?.products 
       const total= productsArray.reduce((acc, prod) => acc +(prod.count),0)
       setItemsInCart(total);
@@ -32,7 +34,7 @@ function CartProvider({ children }) {
   useEffect(() => {getNumberOfItemsInCart()}, []);
 
   return (
-    <CartContext.Provider value={{ itemsInCart, getNumberOfItemsInCart }}>
+    <CartContext.Provider value={{ itemsInCart, getNumberOfItemsInCart , cartId}}>
       {children}
     </CartContext.Provider>
   );

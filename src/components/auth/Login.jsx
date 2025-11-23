@@ -32,8 +32,13 @@ function Login() {
       );
 
       console.log(response);
+      console.log(response.data.user.email);
+      console.log(response.data.user.name);
       const token = response.data.token;
       const LunoraToken = localStorage.setItem("LunoraToken", token);
+      const LunoraUserEmail = localStorage.setItem("LunoraUserEmail", response.data.user.email);
+      const LunoraUserName = localStorage.setItem("LunoraUserName", response.data.user.name);
+
       navigate("/home");
 
       return response;

@@ -1,15 +1,13 @@
 import axios from "axios";
-import { useState , useEffect, createContext} from "react";
+import { useState, useEffect, createContext } from "react";
 
 export const AddressContext = createContext();
 
-function AddressProvider({children}) {
+function AddressProvider({ children }) {
+  const [address, setAddress] = useState();
+  const token = localStorage.getItem("LunoraToken");
 
-const [address, setAddress] = useState()
-
-const getAddress = async () => {
-    const token = localStorage.getItem("LunoraToken");
-
+  const getAddress = async () => {
     try {
       const response = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/addresses",
@@ -19,24 +17,24 @@ const getAddress = async () => {
           },
         }
       );
-      console.log(response?.data?.data[0].details);
+      console.log(response?.data?.data);
 
-      setAddress(response?.data?.data[0].details)
+      setAddress(response?.data?.data);
+
     } catch (error) {
       console.log(error);
     }
   };
 
+ 
 
-  useEffect(()=>{ getAddress() }, [])
+  useEffect(() => {
+    getAddress();
+  }, []);
 
 
 
-
-  return <AddressContext value={{address}}>{children}</AddressContext>
+  return <AddressContext value={{ address }}>{children}</AddressContext>;
 }
 
-export default AddressProvider
-
-
-
+export default AddressProvider;

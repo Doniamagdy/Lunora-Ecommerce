@@ -8,6 +8,9 @@ export default defineConfig({
   plugins: [react(),
        tailwindcss(),
   ],
-  base: '/Lunora-Ecommerce/'
+  // base: '/Lunora-Ecommerce/',
+  server: {
+    port: 3000,
+  }
 
 })

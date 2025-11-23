@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ReusableButton from "../components/ui/ReusableButton";
+import ReusableButton from "../../components/ui/ReusableButton";
 
 function ProductDetails() {
   const params = useParams();

@@ -4,23 +4,18 @@ import useUpdateItemCount from "../../hooks/useUpdateItemCount"
 import { useContext, useState } from "react";
 import useRemoveItem from "../../hooks/useRemoveItem";
 import { CartContext } from "../../context/CartProvider";
+import useCheckout from "../../hooks/useCheckout";
 
 
 
 const Cart = () => {
   const { getNumberOfItemsInCart } = useContext(CartContext);
 
-
-
-
-
   const {mutate: updateCount} = useUpdateItemCount({ onSuccess :()=> getNumberOfItemsInCart() });
 
   const {mutate: removeItem} = useRemoveItem({ onSuccess :()=> getNumberOfItemsInCart() });
 
-
-
-
+  const {mutate: check_out} = useCheckout();
 
   const getProductsFromCart = async () => {
     try {
@@ -172,9 +167,30 @@ const Cart = () => {
           </span>
         </div>
 
-        <button className="mt-5 block text-center w-full px-4 py-2 bg-[#C3A27B] text-white text-sm rounded-md hover:brightness-105 transition">
-          CHECKOUT
-        </button>
+      <button
+  onClick={() =>
+    check_out(
+      {
+        details: "My Address",
+        phone: "01010101010",
+        city: "Cairo"
+      },
+      {
+        onSuccess: (data) => {
+          window.location.href = data.session.url;
+        },
+        onError: (error) => {
+          alert("حدث خطأ أثناء إنشاء session الدفع");
+          console.log(error);
+        }
+      }
+    )
+  }
+  className="mt-5 block text-center w-full px-4 py-2 bg-[#C3A27B] text-white text-sm rounded-md hover:brightness-105 transition"
+>
+  CHECKOUT
+</button>
+
       </div>
     </div>
   );

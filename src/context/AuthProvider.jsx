@@ -16,6 +16,8 @@ function AuthProvider({ children }) {
 
   function logout() {
     localStorage.removeItem("LunoraToken");
+     localStorage.removeItem("LunoraUserEmail");
+      localStorage.removeItem("LunoraUserName");
     navigate("/login");
     setLoggedIn(false);
   }
