@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "../ui/Input";
 import axios from "axios";
-import { useMutation ,  } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import AuthSide from "../ui/AuthSide";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,11 @@ import { useNavigate } from "react-router-dom";
 function ForgetPassword() {
   const navigate = useNavigate();
 
-  const { register, handleSubmit, formState:{errors}}= useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const resetPassword = async (data) => {
     try {
@@ -27,19 +31,18 @@ function ForgetPassword() {
         }
       );
       console.log(response);
-       
-      navigate("/verifyCode")
+
+      navigate("/verifyCode");
       return response;
     } catch (error) {
-        console.log(error); 
+      console.log(error);
     }
   };
 
-  const { mutate ,isIdle, isPending, isSuccess, isError}= useMutation({
+  const { mutate, isIdle, isPending, isSuccess, isError } = useMutation({
     mutationFn: resetPassword,
-    mutationKey: ["resetPassword"]
-  })
-
+    mutationKey: ["resetPassword"],
+  });
 
   return (
     <div className="flex flex-col md:flex-row h-screen font-[Poppins] relative overflow-hidden">
@@ -53,7 +56,10 @@ function ForgetPassword() {
             Enter your email address and we’ll send you a reset code.
           </p>
 
-          <form  onSubmit={handleSubmit((data)=> mutate(data) )} className="space-y-6">
+          <form
+            onSubmit={handleSubmit((data) => mutate(data))}
+            className="space-y-6"
+          >
             {/* Email Input */}
             <div>
               <label className="block text-sm text-gray-600 mb-1">
@@ -62,17 +68,15 @@ function ForgetPassword() {
               <Input
                 type="email"
                 placeholder="Email Address"
-               
-               {...register("email" ,{ required:"Email is required "})}
+                {...register("email", { required: "Email is required " })}
               />
-            
             </div>
 
             {/* Button */}
-            <div className="flex justify-center mt-6">
+            <div className="mt-6">
               <button
                 type="submit"
-                className="bg-gradient-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className="w-full bg-linear-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
               >
                 Send Reset Code
               </button>
@@ -82,9 +86,7 @@ function ForgetPassword() {
       </div>
 
       {/* Right side (visual) */}
-     <AuthSide icon={"🔐"}  title={"Reset Password"}  subtitle={"Enter a new password and regain access to your account."}/>
-
-
+      <AuthSide />
     </div>
   );
 }

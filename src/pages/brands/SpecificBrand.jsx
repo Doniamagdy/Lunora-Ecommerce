@@ -30,6 +30,7 @@ function SpecificBrand() {
 
   return <div className="mt-24 pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 ">
  {data?.map((brand)=>  <ProductCard 
+ key={brand._id}
  id ={brand._id}
     image={brand.imageCover}
     title={brand.title}

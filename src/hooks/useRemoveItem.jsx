@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
 
-function useRemoveItem() {
+function useRemoveItem(options) {
   const token = localStorage.getItem("LunoraToken");
 
   const removeItem = async (itemId) => {
@@ -25,6 +24,7 @@ function useRemoveItem() {
   const mutation = useMutation({
     mutationFn: removeItem,
     mutationKey: ["removeItem"],
+    ...options
   });
 
   return mutation;

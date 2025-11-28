@@ -1,8 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-
+import { useContext } from "react";
+import { WishListContext } from "../context/WishlistProvider";
+import toastify from "../utils/toastify";
 
 function useAddProductToWishlist() {
+  const { getWishList } = useContext(WishListContext);
   const addItemToWishlist = async (productId) => {
     const token = localStorage.getItem("LunoraToken");
 
@@ -18,19 +21,21 @@ function useAddProductToWishlist() {
           },
         }
       );
+      toastify("Product added successfully to the wishlist", "success");
 
-      return response
+      return response;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const mutation=useMutation({
-    mutationFn:addItemToWishlist,
-    mutationKey:["addItemToWishlist"]
-  })
+  const mutation = useMutation({
+    mutationFn: addItemToWishlist,
+    mutationKey: ["addItemToWishlist"],
+    onSuccess: () => getWishList(),
+  });
 
-  return mutation
+  return mutation;
 }
 
 export default useAddProductToWishlist;

@@ -1,17 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { CartContext } from "../context/CartProvider";
+import toastify from "../utils/toastify";
 
 function useAddToCart() {
-    const { getNumberOfItemsInCart } = useContext(CartContext);
-  
-  
+  const { getNumberOfItemsInCart } = useContext(CartContext);
+
   const addProductToCart = async (productId) => {
     const token = localStorage.getItem("LunoraToken");
 
     try {
-
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
@@ -26,8 +25,7 @@ function useAddToCart() {
           },
         }
       );
-      console.log("Product added successfully");
-      
+      toastify("Product added successfully to the cart", "success");
 
       return response.data.data;
     } catch (error) {
@@ -38,7 +36,7 @@ function useAddToCart() {
   const mutation = useMutation({
     mutationFn: addProductToCart,
     mutationKey: ["addProduct"],
-    onSuccess: ()=> getNumberOfItemsInCart()
+    onSuccess: () => getNumberOfItemsInCart(),
   });
 
   return mutation;

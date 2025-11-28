@@ -5,6 +5,7 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import AuthSide from "../ui/AuthSide";
+import toastify from "../../utils/toastify";
 
 function Register() {
   const navigate = useNavigate();
@@ -35,12 +36,17 @@ function Register() {
 
       console.log(response);
       const token = response.data.token;
-      const LunoraToken = localStorage.setItem("LunoraToken", token);
+      localStorage.setItem("LunoraToken", token);
+      toastify("Account created successfully ", "success");
       navigate("/login");
 
       return response;
     } catch (error) {
-      console.log(error);
+      const msg =
+        error?.response?.data?.errors?.msg ||
+        error?.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toastify(msg, "error");
     }
   };
 
@@ -106,7 +112,7 @@ function Register() {
               </label>
               <Input
                 type="password"
-                placeholder="Confirm password"
+                placeholder="Confirm Password"
                 {...register("rePassword", {
                   required: "Confirm password is required",
                 })}
@@ -115,11 +121,11 @@ function Register() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm text-gray-600 mb-1">Phone</label>
+              <label className="block text-sm text-gray-600 mb-1">Mobile</label>
 
               <Input
                 type="tel"
-                placeholder="Phone Number"
+                placeholder="Valid Egyptian Mobile Number"
                 {...register("phone", { required: "Phone number is required" })}
               />
             </div>
@@ -139,14 +145,14 @@ function Register() {
             <div className="flex justify-center gap-3 mt-6">
               <button
                 type="submit"
-                className="bg-gradient-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className=" w-1/2 bg-linear-to-r from-[#d9c2a5] to-[#cfb798]  py-3 px-10 hover:opacity-90 transition-all duration-300"
               >
                 Sign Up
               </button>
               <Link
-              to="/login"
+                to="/login"
                 type="button"
-                className="border border-[#cfb798] text-[#a48763] py-3 px-10 hover:bg-[#f1e6d6] transition-all duration-300"
+                className="w-1/2 text-center border border-[#cfb798] text-[#a48763] py-3 px-10 hover:bg-[#cfb798] hover:text-white transition-all duration-300"
               >
                 Sign In
               </Link>
@@ -156,9 +162,7 @@ function Register() {
       </div>
 
       {/* right side */}
-      <AuthSide icon={"📝"} title={"Create Your Account"} subtitle={"“Join us today and start your shopping journey with exclusive offers.”"}/>
-
-
+      <AuthSide />
     </div>
   );
 }

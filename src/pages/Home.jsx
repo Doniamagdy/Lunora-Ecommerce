@@ -8,22 +8,21 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <Hero  />
+      <Hero />
 
-<div class="w-9/12 mx-auto">
+      <div className="w-9/12 mx-auto">
+      
+        {/* Banners */}
+        <Banners />
 
-      {/* Categories */}
-      <Categories />
+        {/* Categories */}
+        <Categories />
 
-      {/* Banners */}
+        {/* Products */}
+        <PopularProducts />
 
-      <Banners />
-
-      {/* Products */}
-      <PopularProducts />
-
-      {/* Brands */}
-      <Brands />
+        {/* Brands */}
+        <Brands />
 
       </div>
     </>

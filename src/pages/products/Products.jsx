@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FadeLoader } from "react-spinners";
 import ProductCard from "../../components/ui/ProductCard";
-
+import Hero from "../../components/layout/Hero"
 
 function Products() {
      const getData = async () => {
@@ -18,7 +18,7 @@ function Products() {
       );
 
       console.log(response?.data.data);
-          response?.data?.data?.map((solditem)=>console.log(solditem.sold))
+      // response?.data?.data?.map((solditem)=>console.log(solditem.sold))
 
       return response?.data.data;
     } catch (error) {
@@ -31,6 +31,10 @@ function Products() {
     queryFn: getData,
   });
   return (
+
+<> 
+      <Hero />
+
     <div>
        {isError ? <p>{error.message}</p> : null}
       {isLoading ? (
@@ -53,6 +57,7 @@ function Products() {
         </div>
       )}
     </div>
+    </>
   )
 }
 

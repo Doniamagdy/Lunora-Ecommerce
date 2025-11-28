@@ -29,7 +29,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
         />
         
         {/* BRAND TAG - TOP LEFT */}
-        <div className="absolute top-4 left-4 px-3 py-1 bg-[#F5E6D3] bg-opacity-70 text-xs font-semibold rounded">
+        <div className="absolute top-4 left-4 px-3 py-1 bg-[#F5F0BF] bg-opacity-70 text-xs font-semibold rounded">
           {brand}
         </div>
 
@@ -48,15 +48,15 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
       </div>
 
       {/* CONTENT SECTION */}
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col grow">
         {/* TITLE */}
         <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2">
           {title}
         </h3>
 
         {/* PRICE */}
-        <p className="text-lg font-bold text-emerald-600 mb-2">
-          ${price}
+        <p className="text-lg font-bold text-stone-700 mb-2">
+           {price} EGP
         </p>
 
         {/* DESCRIPTION */}
@@ -68,7 +68,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
         <div className="flex items-center justify-between gap-2">
           {/* RATING - LEFT SIDE */}
           <div className="flex items-center gap-1">
-            <div className="text-yellow-400 text-sm">
+            <div className="text-yellow-400 text-lg">
               {"★".repeat(starRating)}
               {"☆".repeat(5 - starRating)}
             </div>
@@ -79,7 +79,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
           <div className="flex items-center gap-2">
             <Link
               to={`/productDetails/${id}`}
-              className="p-2 rounded-lg bg-[#F5E6D3] hover:bg-red-200 transition shadow-md"
+              className="p-2 rounded-lg bg-[#F5F0BF] hover:bg-amber-100 transition shadow-md"
               title="View details"
             >
               <FaEye className="w-4 h-4" />
@@ -87,7 +87,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
 
             <button
               onClick={() => addToCart(id)}
-              className="p-2 rounded-lg bg-gray-900 text-white  hover:bg-red-200 transition shadow-md"
+              className="p-2 rounded-lg bg-[#F5F0BF]   hover:bg-amber-100 transition shadow-md"
               title="Add to cart"
             >
               <BsCart3 className="w-4 h-4" />

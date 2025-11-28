@@ -6,9 +6,7 @@ import useDeleteItemFromWishList from "../../hooks/useDeleteItemFromWishList";
 import { IoMdClose } from "react-icons/io";
 
 function WishList() {
-
-const {mutate} = useDeleteItemFromWishList()
-
+  const { mutate } = useDeleteItemFromWishList();
 
   const getWishlistItems = async () => {
     try {
@@ -37,30 +35,25 @@ const {mutate} = useDeleteItemFromWishList()
   return (
     <div className="mt-[100px] pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {data?.map((wishlistItem) => (
-      
-          <div key={wishlistItem.id} className="relative">
+        <div key={wishlistItem.id} className="relative">
+          <button
+            type="button"
+            onClick={() => mutate(wishlistItem._id)}
+            className="absolute top-3 right-[15px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
+          >
+            <IoMdClose />
+          </button>
 
-<button
-        type="button"
-        onClick={() => mutate(wishlistItem._id)}
-        className="absolute top-3 right-[15px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
-      >
-        <IoMdClose />
-      </button>
-    
-        <ProductCard
-          key={wishlistItem.id}
-          id={wishlistItem._id}
-          title={wishlistItem.title}
-          price={wishlistItem.price}
-          image={wishlistItem.imageCover}
-          brand={wishlistItem.brand.name}
-          rating={wishlistItem.ratingsAverage}
-          
-        />
-        
-</div>
-     
+          <ProductCard
+            key={wishlistItem.id}
+            id={wishlistItem._id}
+            title={wishlistItem.title}
+            price={wishlistItem.price}
+            image={wishlistItem.imageCover}
+            brand={wishlistItem.brand.name}
+            rating={wishlistItem.ratingsAverage}
+          />
+        </div>
       ))}
     </div>
   );

@@ -65,16 +65,16 @@ const Navbar = () => {
            Products
           </Link>
           <Link
-            to={"/brands"}
+            to={"/about-us"}
             className="hover:text-[#C3A27B] transition duration-300 cursor-pointer"
           >
-            Brands
+            About us
           </Link>
           <Link
-            to={"/categories"}
+            to={"/contact-us"}
             className="hover:text-[#C3A27B] transition duration-300 cursor-pointer"
           >
-            Categories
+            Contact us
           </Link>
         </ul>
 

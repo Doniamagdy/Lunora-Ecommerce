@@ -38,11 +38,12 @@ function Address() {
   });
 
   return (
-    <div className="mt-10">
+    <div className="mt-64">
       <div className="flex justify-between">
 
-      <h2 className="text-3xl">Saved Addresses</h2>
-        <AddAddress />
+      <h2 className="text-3xl 4">Saved Addresses</h2>
+            <AddAddress />
+
       </div>
       
 

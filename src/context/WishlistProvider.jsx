@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useState } from 'react'
 export const WishListContext = createContext()
 function WishlistProvider({children}) {
 
-    const [wishList , setWishList]= useState()
+    const [wishList , setWishList]= useState(0)
 
     const getWishList = async ()=>{
         const token = localStorage.getItem("LunoraToken")
@@ -27,7 +27,7 @@ function WishlistProvider({children}) {
 
     useEffect(()=>{getWishList()} ,[])
 
-  return <WishListContext.Provider value={{wishList}} >{children}</WishListContext.Provider>
+  return <WishListContext.Provider value={{wishList, getWishList}} >{children}</WishListContext.Provider>
 }
 
 export default WishlistProvider

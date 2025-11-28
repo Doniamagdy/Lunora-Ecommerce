@@ -1,30 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import React from 'react'
+
+function useUpdateItemCount(options) {
 
 
-function useUpdateItemCount() {
-  const updateCount = async ({productId, currentCount , action}) => {
+  const updateCount = async ({productId , newCount}) => {
 
-let newCount = Number(currentCount);
-
-if(action === "increase"){
-  newCount = currentCount +1 
-}if(action === "decrease" && currentCount > 1){
-  newCount = currentCount -1 
-
-}
-
-
-    
-    
   const token = localStorage.getItem("LunoraToken");
 
     try {
       const response = await axios.put(
         `https://ecommerce.routemisr.com/api/v1/cart/${productId}`,
         {
-          count: newCount,
+          count: Number(newCount),
         },
         {
           headers: {
@@ -34,17 +22,16 @@ if(action === "increase"){
         }
       );
 
-      console.log("coming from hook",productId)
-         
-
-      console.log("count increased");
-      console.log("response from useAddItem", response?.data?.data?.products);
-      
-      
+        console.log(newCount);
+        
+        let productCount = response?.data?.data?.products
+        console.log(productCount);
+        
+// productCount.map((prodCount)=>console.log(prodCount.count))
+     
       return response?.data?.data?.products;
     } catch (error) {
       console.log(error);
-
     }
   };
 
@@ -52,6 +39,7 @@ if(action === "increase"){
   const mutation = useMutation({
     mutationFn: updateCount,
     mutationKey:["updateCount"],
+    ...options,
   })
   
   return mutation

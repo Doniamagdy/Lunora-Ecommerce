@@ -1,25 +1,36 @@
-import {useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import useUpdateItemCount from "../../hooks/useUpdateItemCount"
-import { useContext, useState } from "react";
+import useUpdateItemCount from "../../hooks/useUpdateItemCount";
+import { useContext } from "react";
 import useRemoveItem from "../../hooks/useRemoveItem";
 import { CartContext } from "../../context/CartProvider";
 import useCheckout from "../../hooks/useCheckout";
-
-
+import { IoMdClose } from "react-icons/io";
 
 const Cart = () => {
+  const queryClient = useQueryClient();
+
   const { getNumberOfItemsInCart } = useContext(CartContext);
 
-  const {mutate: updateCount} = useUpdateItemCount({ onSuccess :()=> getNumberOfItemsInCart() });
+  const { mutate: updateCount } = useUpdateItemCount({
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getProductsFromCart"]);
+      getNumberOfItemsInCart();
+    },
+  });
 
-  const {mutate: removeItem} = useRemoveItem({ onSuccess :()=> getNumberOfItemsInCart() });
+  const { mutate: removeItem } = useRemoveItem({
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getProductsFromCart"]);
+      getNumberOfItemsInCart();
+    },
+  });
 
-  const {mutate: check_out} = useCheckout();
+  const { mutate: check_out } = useCheckout();
 
   const getProductsFromCart = async () => {
     try {
-        const token = localStorage.getItem("LunoraToken");
+      const token = localStorage.getItem("LunoraToken");
 
       const response = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/cart",
@@ -30,7 +41,6 @@ const Cart = () => {
           },
         }
       );
-      console.log("cart",response?.data?.data?.products);
 
       return response?.data?.data?.products;
     } catch (error) {
@@ -38,13 +48,11 @@ const Cart = () => {
     }
   };
 
- 
   const { data } = useQuery({
     queryKey: ["getProductsFromCart"],
     queryFn: getProductsFromCart,
+    onSuccess: () => getNumberOfItemsInCart(),
   });
-
- 
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8 mt-[60px]">
@@ -70,19 +78,34 @@ const Cart = () => {
                 <p className="text-sm text-gray-600">
                   Brand: {itemInCart.product.brand?.name}
                 </p>
-                <p className="text-sm text-gray-600">
-                  Category: {itemInCart.product.category?.name}
-                </p>
-                <p className="text-green-600 text-sm font-medium mt-1">
-                  Delivery Tomorrow 🚚
-                </p>
 
-                <div className="flex gap-3 mt-3">
-                  <button onClick={()=> removeItem(itemInCart.product._id)} className="text-sm px-4 py-1 rounded-full border border-gray-300 hover:bg-gray-100">
-                    Remove
+                <div className="flex items-center gap-3  py-2 w-fit  my-2">
+                  <button
+                    onClick={() =>
+                      updateCount({
+                        productId: itemInCart.product._id,
+                        newCount: itemInCart.count - 1,
+                      })
+                    }
+                    className="w-8 h-8 flex items-center justify-center bg-stone-100 text-gray-700  text-sm rounded-full shadow hover:bg-gray-200 transition"
+                  >
+                    −
                   </button>
-                  <button className="text-sm px-4 py-1 rounded-full border border-gray-300 hover:bg-gray-100">
-                    Move to Wishlist
+
+                  <span className="text-gray-800 font-semibold  min-w-6 text-center text-sm">
+                    {itemInCart.count}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      updateCount({
+                        productId: itemInCart.product._id,
+                        newCount: itemInCart.count + 1,
+                      })
+                    }
+                    className="text-sm w-8 h-8 flex items-center justify-center bg-[#F5F0BF] text-white rounded-full shadow hover:bg-amber-200 transition"
+                  >
+                    +
                   </button>
                 </div>
               </div>
@@ -90,29 +113,21 @@ const Cart = () => {
 
             {/* Price Info */}
             <div className="text-right mt-4 md:mt-0">
+              <button
+                onClick={() => removeItem(itemInCart.product._id)}
+                className="mb-4  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
+              >
+                <IoMdClose />
+              </button>
+
               <p className="text-lg font-semibold text-center text-gray-800">
                 {/* EGP {itemInCart.price} */}
                 EGP {itemInCart.price * itemInCart.count}
               </p>
 
-           
-              <p className="text-blue-600 text-xs text-center mt-2">
+              <p className="text-green-600 text-xs text-center mt-2">
                 Free Delivery 🚚
               </p>
-
-              <div className="flex items-center gap-3 px-3 py-2 w-fit  my-2  ">
-                <button onClick={() => updateCount({ productId: itemInCart.product._id, currentCount: itemInCart.count, action: "decrease" })} className="w-8 h-8 flex items-center justify-center bg-stone-100 text-gray-700  text-sm rounded-full shadow hover:bg-gray-200 transition">
-                  −
-                </button>
-
-                <span className="text-gray-800 font-semibold text-lg min-w-[24px] text-center text-sm">
-                  {itemInCart.count}
-                </span>
-
-                <button onClick={() => updateCount({ productId: itemInCart.product._id, currentCount: itemInCart.count, action: "increase" })} className="text-sm w-8 h-8 flex items-center justify-center bg-[#C3A27B] text-white rounded-full shadow hover:bg-[#b18e66] transition">
-                  +  
-                </button>
-              </div>
             </div>
           </div>
         ))}
@@ -167,30 +182,12 @@ const Cart = () => {
           </span>
         </div>
 
-      <button
-  onClick={() =>
-    check_out(
-      {
-        details: "My Address",
-        phone: "01010101010",
-        city: "Cairo"
-      },
-      {
-        onSuccess: (data) => {
-          window.location.href = data.session.url;
-        },
-        onError: (error) => {
-          alert("حدث خطأ أثناء إنشاء session الدفع");
-          console.log(error);
-        }
-      }
-    )
-  }
-  className="mt-5 block text-center w-full px-4 py-2 bg-[#C3A27B] text-white text-sm rounded-md hover:brightness-105 transition"
->
-  CHECKOUT
-</button>
-
+        <button
+          onClick={() => check_out()}
+          className="mt-5 block text-center w-full px-4 py-2 bg-[#F5F0BF] text-sm rounded-md hover:brightness-105 transition"
+        >
+          CHECKOUT
+        </button>
       </div>
     </div>
   );

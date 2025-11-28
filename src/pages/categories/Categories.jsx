@@ -27,11 +27,11 @@ function Categories() {
   });
 
   return (
-    <div className="flex flex-wrap justify-center gap-8  mb-8 ">
+    <div className="flex flex-wrap justify-center gap-8  my-8 ">
       {data?.map((category) => (
         <Link to={`/specific-categories/${category._id}`} key={category._id}>
           <div className="flex flex-col items-center text-center transition-transform duration-200 hover:scale-105">
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg mt-[65px]">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg mt-[31px]">
               <img
                 src={category.image}
                 className="w-full h-full object-cover"

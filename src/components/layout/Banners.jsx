@@ -6,7 +6,7 @@ import image3 from "../../assets/photo-1543422655-ac1c6ca993ed.avif";
 function Banners() {
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {/* Left big panel */}
         <div className="relative md:col-span-2 h-[600px] rounded-lg overflow-hidden">
           <img className="absolute inset-0 w-full h-full object-cover" src={image1} alt="Season Collection" />

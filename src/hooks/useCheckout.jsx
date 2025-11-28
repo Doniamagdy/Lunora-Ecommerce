@@ -12,7 +12,8 @@ const { cartId } = useContext(CartContext)
 
 const checkout = async (data)=>{
     try{
-    
+            // id is cart id
+
     const response = await axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
  {
           shippingAddress: {
@@ -28,10 +29,10 @@ const checkout = async (data)=>{
         }
     )
 
-    console.log(response?.data);
+    console.log(response?.data?.session?.url);
     
-    return response?.data
-
+    return window.location.href  = response?.data?.session?.url
+globalThis
     }catch(error){
         console.log(error);
     }

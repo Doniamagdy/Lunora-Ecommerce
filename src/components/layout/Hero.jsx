@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import HeroImage from "../../assets/banner.jpg";
+import HeroImage from "../../assets/Untitled design (1).png";
 
 function Hero() {
   return (
@@ -10,16 +9,14 @@ function Hero() {
     className="w-full h-full object-cover"
   />
 
-  <div className=" w-5/12 absolute inset-0 flex flex-col  justify-center text-white px-[40px] text-center">
-    <h1 className="text-4xl md:text-6xl font-bold drop-shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
-      Discover The Latest Fashion Trends
+  <div className="absolute inset-0 flex flex-col  justify-center items-center text-white px-10 text-center">
+    <h1 className="text-4xl md:text-7xl font-bold drop-shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+    Enjoy your online shopping
     </h1>
-    <p className="text-xl md:text-2xl mt-4 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.6)]">
+    <p className="text-xl md:text-5xl my-4 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.3)]">
       Up to 50% Off New Season Collection
     </p>
-    <Link to={"/products"} className="bg-white my-4 text-black px-6 py-3 rounded-xl font-semibold hover:bg-black hover:text-white transition">
-      Shop Now
-    </Link>
+   
   </div>
 </div>
   )

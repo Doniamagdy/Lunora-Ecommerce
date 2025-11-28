@@ -6,7 +6,6 @@ import Input from "../ui/Input";
 import AuthSide from "../ui/AuthSide";
 import { useNavigate } from "react-router-dom";
 
-
 function VerifyCode() {
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ function VerifyCode() {
       );
 
       console.log(response);
-      navigate("/resetPassword")
+      navigate("/resetPassword");
       return response;
     } catch (error) {}
   };
@@ -73,10 +72,10 @@ function VerifyCode() {
             </div>
 
             {/* Button */}
-            <div className="flex justify-center mt-6">
+            <div className="mt-6">
               <button
                 type="submit"
-                className="bg-gradient-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className="w-full bg-linear-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
               >
                 Verify Code
               </button>
@@ -85,11 +84,7 @@ function VerifyCode() {
         </div>
       </div>
 
-      <AuthSide
-        icon={"📩"}
-        title={"Verify code"}
-        subtitle={"Verify your password"}
-      />
+      <AuthSide />
     </div>
   );
 }

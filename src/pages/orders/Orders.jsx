@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
+import { useContext } from "react";
+import { CartContext } from "../../context/CartProvider";
+import { UserContext } from "../../context/UserProvider";
 
 function Orders() {
+  // const { cartOwnerId } = useContext(CartContext);
+   const { userId } = useContext(UserContext);
+
   const token = localStorage.getItem("LunoraToken");
+  // const cartOwnerId = localStorage.getItem("LunoraCartOwnerId");
+  // console.log(cartOwnerId);
 
   const getOrders = async () => {
     try {
       const response = await axios.get(
-        "https://ecommerce.routemisr.com/api/v1/orders/user/69107bc251418af5a8caf592",
+        // id is cartOwner id
+        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`,
         {
           headers: {
             token: token,
@@ -16,7 +24,7 @@ function Orders() {
         }
       );
       console.log(response?.data);
-      
+
       return response?.data;
     } catch (error) {
       console.log(error);
@@ -24,16 +32,15 @@ function Orders() {
   };
 
   const { data } = useQuery({
-    queryKey: ["Orders"],
+    queryKey: ["Orders", userId],
     queryFn: getOrders,
+    enabled: !!userId
   });
 
   return (
-    <div className="min-h-screen mt-12 bg-gray-100 py-12">
+    <div className="min-h-screen mt-12 py-12">
       <div className="px-6">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">
-          Your Orders
-        </h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Orders</h1>
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -54,16 +61,28 @@ function Orders() {
 
               {/* Shipping */}
               <div className="mb-4 text-gray-700 text-sm">
-                <p><span className="font-medium">Date:</span> {new Date(order.createdAt).toISOString().slice(0, 10) }
-                {"   "}
-  {new Date(order.createdAt).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  })}</p>
+                <p>
+                  <span className="font-medium">Date:</span>{" "}
+                  {new Date(order.createdAt).toISOString().slice(0, 10)}
+                  {"   "}
+                  {new Date(order.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
 
-                <p><span className="font-medium">Address:</span> {order.shippingAddress.details}</p>
-                <p><span className="font-medium">Phone:</span> {order.shippingAddress.phone}</p>
-                <p><span className="font-medium">City:</span> {order.shippingAddress.city}</p>
+                {/* <p>
+                  <span className="font-medium">Address:</span>{" "}
+                  {order.shippingAddress.details}
+                </p>
+                <p>
+                  <span className="font-medium">Phone:</span>{" "}
+                  {order.shippingAddress.phone}
+                </p>
+                <p>
+                  <span className="font-medium">City:</span>{" "}
+                  {order.shippingAddress.city}
+                </p> */}
               </div>
 
               {/* Cart Items */}
@@ -81,8 +100,12 @@ function Orders() {
                         <p className="text-sm text-gray-900 font-medium">
                           {item.product.title}
                         </p>
-                        <p className="text-xs text-gray-500">{item.product.brand.name}</p>
-                        <p className="text-xs text-gray-500">{item.product.category.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {item.product.brand.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {item.product.category.name}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -94,17 +117,13 @@ function Orders() {
                 Total: {order.totalOrderPrice} EGP
               </p>
 
-              <button className="w-full mt-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:opacity-90 transition">
-                View Details
-              </button>
+           
             </div>
           ))}
         </div>
       </div>
     </div>
   );
-
 }
 
 export default Orders;
-
