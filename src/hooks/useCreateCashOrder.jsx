@@ -6,7 +6,7 @@ import CartProvider from "../context/CartProvider";
 function useCreateCashOrder() {
   const token = localStorage.getItem("LunoraToken");
 
-  const { cartId } = useContext(CartProvider)
+  const { cartId } = useContext(CartProvider);
 
   const createOrder = async (data) => {
     try {
@@ -20,25 +20,23 @@ function useCreateCashOrder() {
           },
         },
         {
-            headers:{
- token: token,
-            }
+          headers: {
+            token: token,
+            "Content-Type": "application/json",
+          },
         }
       );
 
-      return response;
+      return response?.data;
     } catch (error) {
       console.log(error);
     }
   };
 
-
-const mutation = useMutation({
+  const mutation = useMutation({
     mutationFn: createOrder,
-    mutationKey:["createOrder"]
-})
-
-
+    mutationKey: ["createOrder"],
+  });
 
   return mutation;
 }

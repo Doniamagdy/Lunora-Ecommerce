@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import toastify from "../../utils/toastify";
 
 function Categories() {
   const getAllCategories = async () => {
@@ -13,11 +14,10 @@ function Categories() {
           },
         }
       );
-      console.log(response.data.data);
 
-      return response.data.data;
+      return response?.data?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
@@ -33,6 +33,7 @@ function Categories() {
           <div className="flex flex-col items-center text-center transition-transform duration-200 hover:scale-105">
             <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg mt-[31px]">
               <img
+                alt={category.name}
                 src={category.image}
                 className="w-full h-full object-cover"
               />

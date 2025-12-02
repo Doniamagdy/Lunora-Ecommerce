@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
-import Input from "../../components/ui/Input";
+import PasswordInput from "../../components/ui/PasswordInput";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import toastify from "../../utils/toastify";
 
 function EditPassword() {
   const {
@@ -28,11 +29,11 @@ function EditPassword() {
           },
         }
       );
-      console.log(response?.data);
 
+      toastify("Your password has been changed successfully ", "success");
       return response?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
@@ -51,36 +52,49 @@ function EditPassword() {
       >
         <div>
           <label className="block text-sm mb-1">Current Password</label>
-          <Input
+          <PasswordInput
             {...register("currentPassword", { required: true })}
             type={"password"}
             placeholder={"Current password"}
           />
+          {errors.currentPassword && (
+            <span className="text-red-500 mt-1">
+              {errors.currentPassword.message}
+            </span>
+          )}
         </div>
 
         <div>
           <label className="block text-sm mb-1">New Password</label>
-          <Input
+          <PasswordInput
             {...register("password", { required: true })}
             type={"password"}
             placeholder={"New password"}
           />
+          {errors.password && (
+            <span className="text-red-500 mt-1">{errors.password.message}</span>
+          )}
         </div>
 
         <div>
           <label className="block text-sm mb-1">Confirm Password</label>
-          <Input
+          <PasswordInput
             {...register("rePassword", { required: true })}
             type={"password"}
             placeholder={"Confirm password"}
           />
+          {errors.rePassword && (
+            <span className="text-red-500 mt-1">
+              {errors.rePassword.message}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
           <button
             type="submit"
             style={{ backgroundColor: "#F5F0BF" }}
-            className="px-4 py-2 rounded-xl font-medium shadow-sm hover:shadow-md focus:outline-none"
+            className="px-4 py-2 rounded-xl font-medium shadow-sm hover:shadow-md focus:outline-none cursor-pointer"
           >
             Update Password
           </button>

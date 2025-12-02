@@ -6,6 +6,8 @@ import useRemoveItem from "../../hooks/useRemoveItem";
 import { CartContext } from "../../context/CartProvider";
 import useCheckout from "../../hooks/useCheckout";
 import { IoMdClose } from "react-icons/io";
+import { Link } from "react-router-dom";
+import toastify from "../../utils/toastify";
 
 const Cart = () => {
   const queryClient = useQueryClient();
@@ -28,10 +30,10 @@ const Cart = () => {
 
   const { mutate: check_out } = useCheckout();
 
+  const token = localStorage.getItem("LunoraToken");
+
   const getProductsFromCart = async () => {
     try {
-      const token = localStorage.getItem("LunoraToken");
-
       const response = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
@@ -44,21 +46,44 @@ const Cart = () => {
 
       return response?.data?.data?.products;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
-  const { data } = useQuery({
+  const { data: productFromCart } = useQuery({
     queryKey: ["getProductsFromCart"],
     queryFn: getProductsFromCart,
     onSuccess: () => getNumberOfItemsInCart(),
+  });
+
+  const getAddressFirstUserAddressForOnlinePayment = async () => {
+    try {
+      const response2 = await axios.get(
+        "https://ecommerce.routemisr.com/api/v1/addresses",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+
+      return response2?.data?.data[0] || [];
+    } catch (error) {
+      toastify(error.response.data.message, "error");
+    }
+  };
+
+  const { data: addressToBeSent } = useQuery({
+    queryKey: ["getAddressFirstUserAddressForOnlinePayment"],
+    queryFn: getAddressFirstUserAddressForOnlinePayment,
   });
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8 mt-[60px]">
       {/* Left Side - Cart Items */}
       <div className="flex-1 space-y-6">
-        {data?.map((itemInCart) => (
+        {productFromCart?.map((itemInCart) => (
           <div
             key={itemInCart._id}
             className="flex flex-col md:flex-row items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-all"
@@ -140,7 +165,7 @@ const Cart = () => {
         <div className="flex justify-between text-gray-600 mb-2">
           <span>
             Subtotal: ( Items :{" "}
-            {data?.reduce(
+            {productFromCart?.reduce(
               (totalItems, itemInCart) => totalItems + itemInCart.count,
               0
             )}
@@ -148,7 +173,7 @@ const Cart = () => {
           </span>
           <span>
             EGP{" "}
-            {data?.reduce(
+            {productFromCart?.reduce(
               (total, itemInCart) =>
                 total + itemInCart.price * itemInCart.count,
               0
@@ -167,7 +192,7 @@ const Cart = () => {
           <span>Total</span>
           <span>
             EGP{" "}
-            {data?.reduce(
+            {productFromCart?.reduce(
               (total, itemInCart) =>
                 total + itemInCart.price * itemInCart.count,
               0
@@ -175,19 +200,39 @@ const Cart = () => {
           </span>
         </div>
 
+
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4 text-sm text-gray-700">
           💳 Monthly payment plans from EGP 500.{" "}
-          <span className="text-blue-600 cursor-pointer">
-            View more details
-          </span>
+         
         </div>
 
-        <button
-          onClick={() => check_out()}
+
+         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4 text-sm text-gray-700">
+Please make sure you add your shipping address before proceeding to checkout for the first time.
+          <Link to={"/address"} className="text-blue-600 cursor-pointer ps-2 underline">
+              User address
+          </Link>
+        </div>
+
+        <Link
+          onClick={() =>
+            check_out({
+              details: addressToBeSent.details,
+              phone: addressToBeSent.phone,
+              city: addressToBeSent.city,
+            })
+          }
+          className="mt-5 block text-center w-full px-4 py-2 bg-[#F5F0BF] text-sm rounded-md hover:brightness-105 transition cursor-pointer"
+        >
+          Credit Card
+        </Link>
+
+        <Link
+          to="/cashOnDelivery"
           className="mt-5 block text-center w-full px-4 py-2 bg-[#F5F0BF] text-sm rounded-md hover:brightness-105 transition"
         >
-          CHECKOUT
-        </button>
+          Cash on delivery
+        </Link>
       </div>
     </div>
   );

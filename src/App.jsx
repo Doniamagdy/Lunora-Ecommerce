@@ -15,7 +15,6 @@ import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WishList from "./pages/wishlist/WishList";
 import Address from "./pages/address/Address";
-import AddAddress from "./pages/address/AddAddress";
 import Profile from "./pages/profile/Profile";
 import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
@@ -27,69 +26,85 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import NotFoundPage from "./pages/NotFoundPage";
+import CashOnDelivery from "./pages/orders/CashOnDelivery";
 
 function App() {
   return (
-    <> 
-    <Routes>
-      {/* Auth */}
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/forgetPassword" element={<ForgetPassword />} />
-      <Route path="/verifyCode" element={<VerifyCode />} />
-      <Route path="/resetPassword" element={<ResetPassword />} />
+    <>
+      <Routes>
+        {/* Auth */}
+        <Route path="/" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgetPassword" element={<ForgetPassword />} />
+        <Route path="/verifyCode" element={<VerifyCode />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
 
-      <Route path="/" element={<Layout />}>
-        {/* Home */}
-        <Route path="home" element={<Home />} />
+        {/* Routes */}
+        <Route
+          path=""
+          element={
+            <ProtectedRoute>
+              <Layout />{" "}
+            </ProtectedRoute>
+          }
+        >
+          {/* Home */}
+          <Route path="home" element={<Home />} />
 
-        {/* Products */}
-        <Route path="products" element={<Products />} />
-        <Route path="productDetails/:_id" element={<ProductDetails />} />
-        <Route path="popular-products" element={<PopularProducts />} />
+          {/* Products */}
+          <Route path="products" element={<Products />} />
+          <Route path="productDetails/:_id" element={<ProductDetails />} />
+          <Route path="popular-products" element={<PopularProducts />} />
 
-        {/* Categories */}
-        <Route path="categories" element={<Categories />} />
-        <Route path="specific-categories/:_id" element={<SpecificCategory />} />
+          {/* Categories */}
+          <Route path="categories" element={<Categories />} />
+          <Route
+            path="specific-categories/:_id"
+            element={<SpecificCategory />}
+          />
 
-        {/* SubCategories */}
-        <Route path="subCategories/:_id" element={<SubCategories />} />
+          {/* SubCategories */}
+          <Route path="subCategories/:_id" element={<SubCategories />} />
 
-        {/* Brands */}
-        <Route path="brands" element={<Brands />} />
-        {/* Specific Brand */}
-        <Route path="specific-brand/:_id" element={<SpecificBrand />} />
+          {/* Brands */}
+          <Route path="brands" element={<Brands />} />
+          {/* Specific Brand */}
+          <Route path="specific-brand/:_id" element={<SpecificBrand />} />
 
-        {/* Cart */}
-        <Route path="cart" element={<Cart />} />
+          {/* Cart */}
+          <Route path="cart" element={<Cart />} />
 
-        {/* Wishlist */}
-        <Route path="wishlist" element={<WishList />} />
+          {/* Wishlist */}
+          <Route path="wishlist" element={<WishList />} />
 
-        {/* Address */}
-        <Route path="address" element={<Address />} />
-        {/* <Route path="add-address" element={<AddAddress />} /> */}
+          {/* Address */}
+          <Route path="address" element={<Address />} />
 
-        {/* Profile */}
-        <Route path="profile" element={<Profile />} />
+          {/* Profile */}
+          <Route path="profile" element={<Profile />} />
 
-        {/* No Product */}
-        <Route path="noProduct" element={<NoProductFound />} />
+          {/* No Product */}
+          <Route path="noProduct" element={<NoProductFound />} />
 
-        {/* About us */}
-        <Route path="about-us" element={<AboutUs />} />
+          {/* About us */}
+          <Route path="about-us" element={<AboutUs />} />
 
-        {/* Contact us */}
-        <Route path="contact-us" element={<ContactUs />} />
+          {/* Contact us */}
+          <Route path="contact-us" element={<ContactUs />} />
 
           {/* Orders */}
-        <Route path="allorders" element={<Orders />} />
-      </Route>
-    </Routes>
+          <Route path="allorders" element={<Orders />} />
 
+          {/*Cash on delivery */}
+          <Route path="cashOnDelivery" element={<CashOnDelivery />} />
 
-<ToastContainer/>
+          {/* Notfound */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+
+      <ToastContainer />
     </>
   );
 }

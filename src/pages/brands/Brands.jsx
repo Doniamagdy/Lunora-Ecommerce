@@ -4,6 +4,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
+import toastify from "../../utils/toastify";
+
 
 function Brands() {
   const settings = {
@@ -24,11 +26,12 @@ function Brands() {
           },
         }
       );
-      console.log(response.data.data);
+   
 
-      return response.data.data;
+      return response?.data?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
+      
     }
   };
 

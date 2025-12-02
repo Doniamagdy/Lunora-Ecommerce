@@ -1,40 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useContext } from "react";
-import { CartContext } from "../../context/CartProvider";
 import { UserContext } from "../../context/UserProvider";
+import toastify from "../../utils/toastify";
 
 function Orders() {
-  // const { cartOwnerId } = useContext(CartContext);
-   const { userId } = useContext(UserContext);
-
+  const { userId } = useContext(UserContext);
   const token = localStorage.getItem("LunoraToken");
-  // const cartOwnerId = localStorage.getItem("LunoraCartOwnerId");
-  // console.log(cartOwnerId);
 
   const getOrders = async () => {
     try {
       const response = await axios.get(
-        // id is cartOwner id
         `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`,
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log(response?.data);
 
       return response?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
   const { data } = useQuery({
     queryKey: ["Orders", userId],
     queryFn: getOrders,
-    enabled: !!userId
+    enabled: !!userId,
   });
 
   return (
@@ -54,7 +49,7 @@ function Orders() {
                 <h2 className="text-lg font-semibold text-gray-900">
                   Order #{order._id.slice(-6)}
                 </h2>
-                <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">
+                <span className="px-3 py-1 bg-[#F5F0BF] rounded-md text-sm">
                   {order.paymentMethodType}
                 </span>
               </div>
@@ -69,20 +64,22 @@ function Orders() {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
-                </p>
+                  <div>
+                    <p>
+                      <span className="font-medium"> Address details: </span>
+                      {order.shippingAddress?.details}
+                    </p>
 
-                {/* <p>
-                  <span className="font-medium">Address:</span>{" "}
-                  {order.shippingAddress.details}
+                    <p>
+                      <span className="font-medium"> City:</span>{" "}
+                      {order.shippingAddress?.city}
+                    </p>
+                    <p>
+                      <span className="font-medium"> Phone: </span>
+                      {order.shippingAddress?.phone}
+                    </p>
+                  </div>
                 </p>
-                <p>
-                  <span className="font-medium">Phone:</span>{" "}
-                  {order.shippingAddress.phone}
-                </p>
-                <p>
-                  <span className="font-medium">City:</span>{" "}
-                  {order.shippingAddress.city}
-                </p> */}
               </div>
 
               {/* Cart Items */}
@@ -116,8 +113,6 @@ function Orders() {
               <p className="mt-5 font-semibold text-gray-900 text-lg">
                 Total: {order.totalOrderPrice} EGP
               </p>
-
-           
             </div>
           ))}
         </div>

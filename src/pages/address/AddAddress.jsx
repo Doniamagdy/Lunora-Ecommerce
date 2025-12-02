@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Input from "@mui/material/Input";
@@ -15,7 +14,11 @@ function AddAddress() {
     formState: { errors },
   } = useForm();
 
-const {mutate} = useAddAddress()
+  const { mutate } = useAddAddress({
+    onSuccess: () => {
+      handleClose();
+    },
+  });
 
   const style = {
     position: "absolute",
@@ -35,8 +38,13 @@ const {mutate} = useAddAddress()
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
-      <button onClick={handleOpen} className="bg-gray-900 text-amber-50 p-2 rounded-md cursor-pointer">+ Add Address</button>
+    <div className="">
+      <button
+        onClick={handleOpen}
+        className="bg-[#F5F0BF]  p-2 rounded-md cursor-pointer"
+      >
+        + Add Address
+      </button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -55,13 +63,22 @@ const {mutate} = useAddAddress()
             Add new address
           </Typography>
           <Typography id="modal-modal-description">
-            <form onSubmit={handleSubmit((data) => { mutate(data)})} className="space-y-4">
+            <form
+              onSubmit={handleSubmit((data) => {
+                mutate(data);
+              })}
+              className="space-y-4"
+            >
               <Input
                 type="text"
                 placeholder="Address name Home or Work"
                 className="w-full my-3"
                 {...register("name", { required: "Address name is required" })}
               />
+              {errors.name && (
+                <span className="text-red-500 mt-1">{errors.name.message}</span>
+              )}
+
               <Input
                 type="text"
                 placeholder="Address"
@@ -70,19 +87,39 @@ const {mutate} = useAddAddress()
                   required: "Address details is required",
                 })}
               />
+              {errors.details && (
+                <span className="text-red-500 mt-1">
+                  {errors.details.message}
+                </span>
+              )}
+
               <Input
                 type="number"
                 placeholder="Phone number"
                 className="w-full my-3"
                 {...register("phone", { required: "Phone number is required" })}
               />
+              {errors.phone && (
+                <span className="text-red-500 mt-1">
+                  {errors.phone.message}
+                </span>
+              )}
+
               <Input
                 type="text"
                 placeholder="City"
                 className="w-full my-3"
                 {...register("city", { required: "City is required" })}
               />
-              <ReusableButton type="submit" buttonText={"+ Add address"} />
+              {errors.city && (
+                <span className="text-red-500 mt-1">{errors.city.message}</span>
+              )}
+
+              <ReusableButton
+                type="submit"
+                buttonText={"+ Add address"}
+                className="bg-[#F5F0BF] p-3 rounded-md cursor-pointer"
+              />
             </form>
           </Typography>
         </Box>

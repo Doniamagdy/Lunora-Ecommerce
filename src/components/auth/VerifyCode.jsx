@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input";
 import AuthSide from "../ui/AuthSide";
 import { useNavigate } from "react-router-dom";
+import toastify from "../../utils/toastify";
 
 function VerifyCode() {
   const navigate = useNavigate();
@@ -13,31 +13,32 @@ function VerifyCode() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm()
 
   const verifyCode = async (data) => {
     try {
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode",
         {
-          // body
           resetCode: data.resetCode,
         },
         {
-          // header
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
 
-      console.log(response);
+   
       navigate("/resetPassword");
-      return response;
-    } catch (error) {}
+      return response?.data;
+    } catch (error) {
+      toastify(error.response.data.message, "error");
+
+    }
   };
 
-  const { mutate, isIdle, isPending, isSuccess, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["verifyCode"],
     mutationFn: verifyCode,
   });
@@ -69,13 +70,19 @@ function VerifyCode() {
                 placeholder="Enter your code"
                 {...register("resetCode", { required: "OTP is required " })}
               />
+
+               {errors.resetCode && (
+                <span className="text-red-500 mt-1">
+                  {errors.resetCode.message}
+                </span>
+              )}
             </div>
 
             {/* Button */}
             <div className="mt-6">
               <button
                 type="submit"
-                className="w-full bg-linear-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className="w-full bg-[#F5F0BF] py-3 px-10 hover:opacity-90 transition-all duration-300 cursor-pointer "
               >
                 Verify Code
               </button>

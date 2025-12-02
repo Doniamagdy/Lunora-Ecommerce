@@ -1,4 +1,3 @@
-import React from "react";
 import image1 from "../../assets/premium_photo-1664202526535-c01e4b0c42b7.avif";
 import image2 from "../../assets/photo-1562273138-f46be4ebdf33.avif";
 import image3 from "../../assets/photo-1543422655-ac1c6ca993ed.avif";

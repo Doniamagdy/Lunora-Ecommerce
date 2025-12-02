@@ -1,10 +1,11 @@
-import React from "react";
 import Input from "../ui/Input";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import AuthSide from "../ui/AuthSide";
 import { useNavigate } from "react-router-dom";
+import toastify from "../../utils/toastify";
+
 
 function ForgetPassword() {
   const navigate = useNavigate();
@@ -20,26 +21,23 @@ function ForgetPassword() {
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords",
         {
-          //body
           email: data.email,
         },
         {
-          //header
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
 
       navigate("/verifyCode");
       return response;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
-  const { mutate, isIdle, isPending, isSuccess, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: resetPassword,
     mutationKey: ["resetPassword"],
   });
@@ -69,14 +67,20 @@ function ForgetPassword() {
                 type="email"
                 placeholder="Email Address"
                 {...register("email", { required: "Email is required " })}
+              
               />
+               {errors.email && (
+                <span className="text-red-500 mt-1">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             {/* Button */}
             <div className="mt-6">
               <button
                 type="submit"
-                className="w-full bg-linear-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className="w-full bg-[#F5F0BF]  py-3 px-10 hover:opacity-90 transition-all duration-300 cursor-pointer"
               >
                 Send Reset Code
               </button>

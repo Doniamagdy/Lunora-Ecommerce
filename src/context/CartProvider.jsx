@@ -1,28 +1,31 @@
 import axios from "axios";
-import  { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import toastify from "../utils/toastify";
+import { AuthContext } from "./AuthProvider";
 
 export const CartContext = createContext();
 function CartProvider({ children }) {
+  const { userToken } = useContext(AuthContext); 
   const [itemsInCart, setItemsInCart] = useState(0);
-  const [cartId, setCartId] = useState();
-  const [cartOwnerId, setCartOwnerId] = useState();
-  const [productCount, setProductCount] = useState(0)
+  const [cartId, setCartId] = useState("");
+  const [cartOwnerId, setCartOwnerId] = useState("");
 
   const getNumberOfItemsInCart = async () => {
-    try {
-      const token = localStorage.getItem("LunoraToken");
+    if (!userToken) {
+      setItemsInCart(0);
+      return;
+    }
 
+    try {
       const response = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
           headers: {
+            token: userToken,
             "Content-Type": "application/json",
-            token: token,
           },
         }
       );
-
-      
 
       setCartId(response?.data?.cartId);
 
@@ -34,20 +37,17 @@ function CartProvider({ children }) {
       const total = productsArray.reduce((acc, prod) => acc + prod.count, 0);
       setItemsInCart(total);
     } catch (error) {
-      console.log(error);
+      toastify(error?.response?.data?.message, "error");
     }
   };
 
   useEffect(() => {
     getNumberOfItemsInCart();
-  }, []);
-
-
- 
+  }, [userToken]);
 
   return (
     <CartContext.Provider
-      value={{ itemsInCart, getNumberOfItemsInCart, cartId, cartOwnerId  }}
+      value={{ itemsInCart, getNumberOfItemsInCart, cartId, cartOwnerId }}
     >
       {children}
     </CartContext.Provider>

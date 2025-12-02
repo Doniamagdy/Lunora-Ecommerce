@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import AuthSide from "../ui/AuthSide";
 import Input from "../ui/Input";
 import { useNavigate } from "react-router-dom";
+import toastify from "../../utils/toastify";
+
 function ResetPassword() {
   const navigate = useNavigate();
 
@@ -18,26 +20,23 @@ function ResetPassword() {
       const response = await axios.put(
         "https://ecommerce.routemisr.com/api/v1/auth/resetPassword",
         {
-          // body
           email: data.email,
           newPassword: data.newPassword,
         },
         {
-          // headers
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
       navigate("/login");
-      return response;
+      return response?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
-  const { mutate, isIdle, isPending, isSuccess } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: resetPassword,
     mutationKey: ["resetPassword"],
   });
@@ -66,6 +65,12 @@ function ResetPassword() {
                 placeholder="Enter your email"
                 {...register("email", { required: "Email is required" })}
               />
+
+              {errors.email && (
+                <span className="text-red-500 mt-1">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             {/* New Password */}
@@ -80,13 +85,19 @@ function ResetPassword() {
                   required: "New password is required",
                 })}
               />
+
+              {errors.password && (
+                <span className="text-red-500 mt-1">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             {/* Button */}
             <div className=" mt-6">
               <button
                 type="submit"
-                className="w-full bg-linear-to-r from-[#d9c2a5] to-[#cfb798] text-white py-3 px-10 hover:opacity-90 transition-all duration-300 "
+                className="w-full bg-[#F5F0BF]   py-3 px-10 hover:opacity-90 transition-all duration-300 cursor-pointer "
               >
                 Reset Password
               </button>

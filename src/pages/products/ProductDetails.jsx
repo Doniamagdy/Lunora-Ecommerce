@@ -1,13 +1,13 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReusableButton from "../../components/ui/ReusableButton";
 import useAddToCart from "../../hooks/useAddToCart";
+import toastify from "../../utils/toastify";
 
 function ProductDetails() {
   const params = useParams();
- const{mutate} =useAddToCart()
+  const { mutate } = useAddToCart();
 
   let starRating = 0;
 
@@ -21,12 +21,11 @@ function ProductDetails() {
           },
         }
       );
-      console.log(response);
       starRating = Math.round(data?.ratingsAverage);
 
       return response?.data?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
@@ -70,15 +69,17 @@ function ProductDetails() {
             </span>
           </div>
           <h1 className="text-2xl font-bold text-gray-800">{data?.title}</h1>
-          <p className=" text-xl font-semibold">
-            EGP {data?.price}
-          </p>
+          <p className=" text-xl font-semibold">EGP {data?.price}</p>
 
-                  <hr className="my-3" />
+          <hr className="my-3" />
 
           <p className="text-gray-600 leading-relaxed">{data?.description}</p>
 
-          <ReusableButton buttonText="Add to Cart"  onClick={()=> mutate(data?._id)} />
+          <ReusableButton
+            buttonText="Add to Cart"
+            onClick={() => mutate(data?._id)}
+            className="mt-6 w-full bg-[#F5F0BF] font-semibold py-2 px-4 rounded-lg shadow transition cursor-pointer"
+          />
         </div>
       </div>
     </div>

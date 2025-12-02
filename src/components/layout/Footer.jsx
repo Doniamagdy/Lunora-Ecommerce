@@ -1,4 +1,3 @@
-import React from "react";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {

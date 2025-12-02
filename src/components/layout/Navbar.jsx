@@ -1,56 +1,30 @@
-import { Search, User } from "lucide-react";
+import { User } from "lucide-react";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 
 import { BsHeart } from "react-icons/bs";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { CartContext } from "../../context/CartProvider";
-import { AddressContext } from "../../context/AddressProvider";
 import { WishListContext } from "../../context/WishlistProvider";
 
 const Navbar = () => {
   const { logout } = useContext(AuthContext);
   const { itemsInCart } = useContext(CartContext);
-  const { address } = useContext(AddressContext);
   const { wishList } = useContext(WishListContext);
-
-  const [selected, setSelected] = useState("");
-
-  const handleChange = (e) => {
-    setSelected(e.target.value);
-  };
 
   return (
     <nav className="bg-white shadow-sm fixed top-0 left-0 w-full z-50">
       <div className=" mx-2 px-4 py-6 flex items-center justify-between">
         {/* Logo */}
 
-        <div className="flex items-center gap-6">
-          {/* LOGO */}
+        <div className="hidden md:flex items-center gap-6">
           <span className="text-2xl font-serif font-semibold text-[#C3A27B] tracking-wide">
             Lunora
           </span>
-
-          {/* DELIVERY TEXT */}
-          <span className="text-[#6b5e54] text-sm  flex items-center gap-2 mt-1">
-            <span className="text-[#C3A27B] font-semibold">Deliver to:</span>
-            <select
-              onChange={handleChange}
-              value={selected}
-              className=" text-gray-700  focus:outline-none "
-            >
-              <option>Select address..</option>
-              {address?.map((chosenAddress) => (
-                <option key={chosenAddress._id}>
-                  {chosenAddress.details}{" "}
-                </option>
-              ))}
-            </select>
-          </span>
         </div>
-        {/* Links (Hidden on small screens) */}
-        <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
+
+        <ul className="flex flex-row items-center gap-6 text-gray-700 font-medium">
           <Link
             to={"/home"}
             className="hover:text-[#C3A27B] transition duration-300 cursor-pointer"
@@ -58,11 +32,11 @@ const Navbar = () => {
             Home
           </Link>
 
-           <Link
+          <Link
             to={"/products"}
             className="hover:text-[#C3A27B] transition duration-300 cursor-pointer"
           >
-           Products
+            Products
           </Link>
           <Link
             to={"/about-us"}
@@ -80,7 +54,6 @@ const Navbar = () => {
 
         {/* Icons */}
         <div className="flex items-center gap-5 text-gray-600">
-          <Search className="w-6 h-6 cursor-pointer hover:text-[#C3A27B]" />
           <Link to={"/profile"}>
             <User className="w-6 h-6 cursor-pointer hover:text-[#C3A27B]" />
           </Link>

@@ -22,12 +22,8 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-full flex flex-col">
       {/* IMAGE - FULL WIDTH NO PADDING */}
       <div className="relative w-full overflow-hidden bg-gray-100 aspect-square">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover"
-        />
-        
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+
         {/* BRAND TAG - TOP LEFT */}
         <div className="absolute top-4 left-4 px-3 py-1 bg-[#F5F0BF] bg-opacity-70 text-xs font-semibold rounded">
           {brand}
@@ -36,7 +32,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
         {/* WISHLIST - BOTTOM RIGHT */}
         <button
           onClick={handleWishlist}
-          className="absolute bottom-4 right-4 p-2.5 rounded-lg bg-white shadow-md hover:shadow-lg transition"
+          className="absolute bottom-4 right-4 p-2.5 rounded-lg bg-white shadow-md hover:shadow-lg transition cursor-pointer"
           title="Add to wishlist"
         >
           {isWishlisted ? (
@@ -55,14 +51,10 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
         </h3>
 
         {/* PRICE */}
-        <p className="text-lg font-bold text-stone-700 mb-2">
-           {price} EGP
-        </p>
+        <p className="text-lg font-bold text-stone-700 mb-2">{price} EGP</p>
 
         {/* DESCRIPTION */}
-        <p className="text-xs text-gray-600 line-clamp-2 mb-3">
-          {description}
-        </p>
+        <p className="text-xs text-gray-600 line-clamp-2 mb-3">{description}</p>
 
         {/* RATING & ACTION BUTTONS */}
         <div className="flex items-center justify-between gap-2">
@@ -87,7 +79,7 @@ function ProductCard({ id, image, title, price, description, brand, rating }) {
 
             <button
               onClick={() => addToCart(id)}
-              className="p-2 rounded-lg bg-[#F5F0BF]   hover:bg-amber-100 transition shadow-md"
+              className="p-2 rounded-lg bg-[#F5F0BF]   hover:bg-amber-100 transition shadow-md cursor-pointer"
               title="Add to cart"
             >
               <BsCart3 className="w-4 h-4" />

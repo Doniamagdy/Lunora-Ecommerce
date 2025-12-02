@@ -6,11 +6,12 @@ import { GiModernCity } from "react-icons/gi";
 import { GrMapLocation } from "react-icons/gr";
 import AddAddress from "./AddAddress";
 import useDeleteAddress from "../../hooks/useDeleteAddress";
+import toastify from "../../utils/toastify";
+
 
 
 function Address() {
-
-  const {mutate} = useDeleteAddress()
+  const { mutate } = useDeleteAddress();
 
   const getAddress = async () => {
     const token = localStorage.getItem("LunoraToken");
@@ -21,14 +22,14 @@ function Address() {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log(response?.data?.data);
 
       return response?.data?.data;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
@@ -38,26 +39,21 @@ function Address() {
   });
 
   return (
-    <div className="mt-64">
+    <div className="mt-50 w-9/12 mx-auto">
       <div className="flex justify-between">
-
-      <h2 className="text-3xl 4">Saved Addresses</h2>
-            <AddAddress />
-
+        <h2 className="text-3xl 4">Saved Addresses</h2>
+        <AddAddress />
       </div>
-      
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
         {data?.map((address) => (
           <div
             key={address._id}
-            className="flex-1 bg-slate-50 rounded-3xl p-6 shadow-sm hover:shadow-md transition duration-300"
+            className="flex-1 border-slate-50 rounded-3xl p-6 shadow-sm hover:shadow-md transition duration-300"
           >
             <div>
               <div>
-                <p className="text-3xl ">
-                  {address.name}
-                </p>
+                <p className="text-3xl ">{address.name}</p>
 
                 <div className="text-gray-700 mt-4 space-y-1">
                   <p className="flex">
@@ -80,7 +76,11 @@ function Address() {
               </div>
 
               <div className="flex mt-4 mb-2 gap-2">
-                <ReusableButton buttonText={"Delete address"}  onClick={()=> mutate(address._id)}/>
+                <ReusableButton
+                  className="bg-[#F5F0BF] p-3 rounded-md"
+                  buttonText={"Delete address"}
+                  onClick={() => mutate(address._id)}
+                />
               </div>
             </div>
           </div>

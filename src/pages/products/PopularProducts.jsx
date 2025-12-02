@@ -1,22 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ProductCard from "../../components/ui/ProductCard";
+import toastify from "../../utils/toastify";
+
 function PopularProducts() {
-
-
   const getPopularProducts = async () => {
     try {
       const response = await axios.get(
-        "https://ecommerce.routemisr.com/api/v1/products?sort=-sold"
+        "https://ecommerce.routemisr.com/api/v1/products?sort=-sold",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log(response.data.data);
 
-      const newArray = response?.data.data;
+      const newArray = response?.data?.data;
       const mostPopularProducts = newArray.splice(0, 4);
 
       return mostPopularProducts;
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.message, "error");
     }
   };
 
@@ -26,25 +30,24 @@ function PopularProducts() {
   });
 
   return (
-
-
-    <div className="mt-24"> 
-    <h2 className="text-4xl md:text-5xl font-bold  drop-shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">Popular products</h2>
-    <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
-      {data?.map((popularProduct) => (
-        <ProductCard
-        key={popularProduct._id}
-          id={popularProduct._id}
-          image={popularProduct.imageCover}
-          title={popularProduct.title}
-          price={popularProduct.price}
-          brand={popularProduct.brand.name}
-          rating={popularProduct.ratingsAverage}
-        />
-      ))}
+    <div className="mt-24">
+      <h2 className="text-4xl md:text-5xl font-bold  drop-shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+        Popular products
+      </h2>
+      <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
+        {data?.map((popularProduct) => (
+          <ProductCard
+            key={popularProduct._id}
+            id={popularProduct._id}
+            image={popularProduct.imageCover}
+            title={popularProduct.title}
+            price={popularProduct.price}
+            brand={popularProduct.brand.name}
+            rating={popularProduct.ratingsAverage}
+          />
+        ))}
+      </div>
     </div>
-    </div>
-   
   );
 }
 

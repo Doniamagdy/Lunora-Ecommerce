@@ -1,11 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import toastify from "../utils/toastify";
 
 function useAddAddress() {
-  const addNewAddress = async ({name, details, phone, city}) => {
-    try {
-      const token = localStorage.getItem("LunoraToken");
+  const queryClient = useQueryClient();
 
+  const addNewAddress = async ({ name, details, phone, city }) => {
+    const token = localStorage.getItem("LunoraToken");
+
+    try {
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/addresses",
         {
@@ -17,23 +20,26 @@ function useAddAddress() {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      console.log(response?.data);
-      return response?.data
       
+      toastify("New address has been added successfully", "success");
+      return response?.data;
     } catch (error) {
       console.log(error);
     }
   };
 
-
   const mutation = useMutation({
-    mutationFn:addNewAddress,
-    mutationKey:['addNewAddress']
-  })
+    mutationFn: addNewAddress,
+    mutationKey: ["addNewAddress"],
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getAddress"]);
+    },
+  });
 
   return mutation;
 }

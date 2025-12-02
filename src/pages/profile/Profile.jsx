@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Avatar from "../../assets/user (2).png";
 import EditProfile from "./EditProfile";
-import EditPassword from "./EditPassword"
+import EditPassword from "./EditPassword";
 function Profile() {
   const LunoraUserName = localStorage.getItem("LunoraUserName");
   const LunoraUserEmail = localStorage.getItem("LunoraUserEmail");
@@ -30,7 +30,7 @@ function Profile() {
             </li>
             <li className="py-2">
               <Link
-                to="/userOrder"
+                to="/allorders"
                 className="text-md font-semibold hover:underline block"
               >
                 My Orders
@@ -43,7 +43,7 @@ function Profile() {
       {/* Right Side Forms */}
       <main className="flex-1 grid gap-6 md:grid-cols-2">
         {/* Edit Profile Card */}
-       <EditProfile />
+        <EditProfile />
 
         {/* Change Password Card */}
         <EditPassword />

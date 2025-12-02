@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
-function useDeleteItemFromWishList() {
+import toastify from "../utils/toastify";
+
+function useDeleteItemFromWishList(options) {
   const deleteItemFromWishlist = async (productId) => {
     const token = localStorage.getItem("LunoraToken");
 
@@ -11,22 +12,26 @@ function useDeleteItemFromWishList() {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      return response
+      toastify(response?.data?.message, "error");
+
+      return response?.data;
     } catch (error) {
       console.log(error);
     }
   };
 
-const mutation = useMutation({
-    mutationFn:deleteItemFromWishlist,
-    mutationKey:["deleteItemFromWishlist"]
-})
+  const mutation = useMutation({
+    mutationFn: deleteItemFromWishlist,
+    mutationKey: ["deleteItemFromWishlist"],
+    ...options,
+  });
 
-  return mutation
+  return mutation;
 }
 
 export default useDeleteItemFromWishList;

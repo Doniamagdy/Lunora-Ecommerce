@@ -1,4 +1,3 @@
-import React from "react";
 import Input from "../ui/Input";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -6,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import AuthSide from "../ui/AuthSide";
 import toastify from "../../utils/toastify";
+import PasswordInput from "../../components/ui/PasswordInput";
 
 function Register() {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ function Register() {
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/signup",
         {
-          // Body
           name: data.name,
           email: data.email,
           password: data.password,
@@ -29,12 +28,10 @@ function Register() {
           phone: data.phone,
         },
         {
-          // header
           headers: { "Content-Type": "application/json" },
         }
       );
 
-      console.log(response);
       const token = response.data.token;
       localStorage.setItem("LunoraToken", token);
       toastify("Account created successfully ", "success");
@@ -50,7 +47,7 @@ function Register() {
     }
   };
 
-  const { mutate, isPending, isSuccess, isError, isIdle } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["registrationData"],
     mutationFn: sendRegistrationData,
   });
@@ -77,6 +74,9 @@ function Register() {
                 placeholder="Full Name"
                 {...register("name", { required: "Name is required" })}
               />
+              {errors.name && (
+                <span className="text-red-500 mt-1">{errors.name.message}</span>
+              )}
             </div>
 
             {/* Email */}
@@ -90,6 +90,11 @@ function Register() {
                 placeholder="Email Address"
                 {...register("email", { required: "Email is required" })}
               />
+              {errors.email && (
+                <span className="text-red-500 mt-1">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             {/* Password */}
@@ -98,11 +103,24 @@ function Register() {
                 Password
               </label>
 
-              <Input
+              <PasswordInput
                 type="password"
                 placeholder="Password"
-                {...register("password", { required: "Password is required" })}
+                {...register("password", {
+                  required: "Password is required",
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                    message:
+                      "Password must be at least 8 characters and include uppercase, lowercase, number, and special character",
+                  },
+                })}
               />
+              {errors.password && (
+                <span className="text-red-500 mt-1">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             {/* Re-enter Password */}
@@ -110,13 +128,23 @@ function Register() {
               <label className="block text-sm text-gray-600 mb-1">
                 Re-enter Password
               </label>
-              <Input
+              <PasswordInput
                 type="password"
                 placeholder="Confirm Password"
                 {...register("rePassword", {
                   required: "Confirm password is required",
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                    message: "Repassword must match the password",
+                  },
                 })}
               />
+              {errors.rePassword && (
+                <span className="text-red-500 mt-1">
+                  {errors.rePassword.message}
+                </span>
+              )}
             </div>
 
             {/* Phone */}
@@ -128,6 +156,11 @@ function Register() {
                 placeholder="Valid Egyptian Mobile Number"
                 {...register("phone", { required: "Phone number is required" })}
               />
+              {errors.phone && (
+                <span className="text-red-500 mt-1">
+                  {errors.phone.message}
+                </span>
+              )}
             </div>
 
             {/* Terms */}
@@ -135,9 +168,9 @@ function Register() {
               <input type="checkbox" className="mr-2 accent-[#cfb798]" />
               <p>
                 By signing up, I agree with{" "}
-                <a href="#" className="text-[#a48763] underline">
+                <span  className="text-[#a48763] underline">
                   Terms & Conditions
-                </a>
+                </span>
               </p>
             </div>
 
@@ -145,14 +178,14 @@ function Register() {
             <div className="flex justify-center gap-3 mt-6">
               <button
                 type="submit"
-                className=" w-1/2 bg-linear-to-r from-[#d9c2a5] to-[#cfb798]  py-3 px-10 hover:opacity-90 transition-all duration-300"
+                className=" w-1/2 bg-[#F5F0BF]  py-3 px-10 hover:opacity-90 transition-all duration-300 cursor-pointer "
               >
                 Sign Up
               </button>
               <Link
                 to="/login"
                 type="button"
-                className="w-1/2 text-center border border-[#cfb798] text-[#a48763] py-3 px-10 hover:bg-[#cfb798] hover:text-white transition-all duration-300"
+                className="w-1/2 text-center border border-[#cfb798] text-[#a48763] py-3 px-10 hover:bg-[#F5F0BF] hover:text-gray-900 transition-all duration-300 cursor-pointer "
               >
                 Sign In
               </Link>

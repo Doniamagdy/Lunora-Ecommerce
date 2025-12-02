@@ -18,12 +18,13 @@ function useAddProductToWishlist() {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
       toastify("Product added successfully to the wishlist", "success");
 
-      return response;
+      return response?.data;
     } catch (error) {
       console.log(error);
     }

@@ -11,11 +11,12 @@ function useRemoveItem(options) {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      return response;
+      return response?.data;
     } catch (error) {
       console.log(error);
     }

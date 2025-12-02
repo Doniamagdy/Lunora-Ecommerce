@@ -7,25 +7,42 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const userToken = localStorage.getItem("LunoraToken");
+  const [userToken, setUserToken] = useState(
+    localStorage.getItem("LunoraToken")
+  ); // اضف ده
 
   useEffect(() => {
     userToken ? setLoggedIn(true) : setLoggedIn(false);
     setLoading(false);
-  }, []);
+  }, [userToken]);
+
+  function updateToken(token) {
+    setUserToken(token);
+  }
 
   function logout() {
     localStorage.removeItem("LunoraToken");
-     localStorage.removeItem("LunoraUserEmail");
-      localStorage.removeItem("LunoraUserName");
-         localStorage.removeItem("LunoraCartId");
-      localStorage.removeItem("LunoraCartOwnerId");
-    navigate("/login");
+    localStorage.removeItem("LunoraUserEmail");
+    localStorage.removeItem("LunoraUserName");
+    localStorage.removeItem("LunoraCartId");
+    localStorage.removeItem("LunoraCartOwnerId");
+    setUserToken(null); // اضف ده
+
+    navigate("/");
     setLoggedIn(false);
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, logout }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        loading,
+        logout,
+        setLoggedIn,
+        userToken,
+        updateToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

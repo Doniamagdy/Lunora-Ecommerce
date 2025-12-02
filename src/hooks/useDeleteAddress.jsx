@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-
 function useDeleteAddress() {
+  const queryClient = useQueryClient();
+
   const deleteAddress = async (id) => {
     const token = localStorage.getItem("LunoraToken");
 
@@ -12,26 +13,26 @@ function useDeleteAddress() {
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      console.log(response.data);
-      return response.data
-
+      return response?.data;
     } catch (error) {
       console.log(error);
     }
   };
 
+  const mutation = useMutation({
+    mutationFn: deleteAddress,
+    mutationKey: ["deleteAddress"],
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getAddress"]);
+    },
+  });
 
-const mutation = useMutation({
-  mutationFn: deleteAddress,
-  mutationKey:['deleteAddress'],
-//   onSuccess: ()=> getAddress()
-})
-
-  return mutation
+  return mutation;
 }
 
 export default useDeleteAddress;

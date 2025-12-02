@@ -1,25 +1,35 @@
-import React from "react";
 import ProductCard from "../../components/ui/ProductCard";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useDeleteItemFromWishList from "../../hooks/useDeleteItemFromWishList";
 import { IoMdClose } from "react-icons/io";
+import { useContext } from "react";
+import { WishListContext } from "../../context/WishlistProvider";
 
 function WishList() {
-  const { mutate } = useDeleteItemFromWishList();
+  const queryClient = useQueryClient();
+
+  const { getWishList } = useContext(WishListContext);
+
+  const { mutate } = useDeleteItemFromWishList({
+    onSuccess: () => {
+      queryClient.invalidateQueries(["wishlistItems"]);
+      getWishList();
+    },
+  });
 
   const getWishlistItems = async () => {
+    const token = localStorage.getItem("LunoraToken");
     try {
-      const token = localStorage.getItem("LunoraToken");
       const response = await axios.get(
         "https://ecommerce.routemisr.com/api/v1/wishlist",
         {
           headers: {
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log(response?.data?.data);
 
       return response?.data?.data;
     } catch (error) {
@@ -39,7 +49,7 @@ function WishList() {
           <button
             type="button"
             onClick={() => mutate(wishlistItem._id)}
-            className="absolute top-3 right-[15px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition"
+            className="absolute top-3 right-[15px] z-30  bg-white text-gray-700 p-2 rounded-full shadow hover:bg-red-500 hover:text-white transition cursor-pointer"
           >
             <IoMdClose />
           </button>

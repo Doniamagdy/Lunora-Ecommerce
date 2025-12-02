@@ -8,26 +8,24 @@ function useAddToCart() {
   const { getNumberOfItemsInCart } = useContext(CartContext);
 
   const addProductToCart = async (productId) => {
-    const token = localStorage.getItem("LunoraToken");
+  const token = localStorage.getItem("LunoraToken");
 
     try {
       const response = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
-          //body
           productId: productId,
         },
         {
-          //headers
           headers: {
-            "Content-Type": "application/json",
             token: token,
+            "Content-Type": "application/json",
           },
         }
       );
       toastify("Product added successfully to the cart", "success");
 
-      return response.data.data;
+      return response?.data?.data;
     } catch (error) {
       console.log(error);
     }
