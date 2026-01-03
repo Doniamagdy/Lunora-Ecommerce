@@ -41,15 +41,23 @@ function Brands() {
   });
 
   return (
-    <div className="gap-6 my-8 mx-auto w-7xl">
-      <Slider {...settings}>
-        {data?.map((brand) => (
-          <Link key={brand._id} to={`/specific-brand/${brand._id}`}>
-            <img src={brand.image} />
-          </Link>
-        ))}
-      </Slider>
-    </div>
+    <div className="my-8 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+  <Slider {...settings}>
+    {data?.map((brand) => (
+      <Link
+        key={brand._id}
+        to={`/specific-brand/${brand._id}`}
+        className="flex items-center justify-center px-2"
+      >
+        <img
+          src={brand.image}
+          alt="brand"
+          className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain mx-auto"
+        />
+      </Link>
+    ))}
+  </Slider>
+</div>
   );
 }
 
